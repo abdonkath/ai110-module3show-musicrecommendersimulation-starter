@@ -11,26 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-In this system, I are using genre, mood, energy, valence, danceability, acousticness for scoring. I am not using tempo because I thought it's already closely related to energy. Also, title, artist, and ID are also not used for scoring but for display and identification.
-
-UserProfile store their favorite genre, their favorite mood, their target energy level and whethher they prefer acoustic or electronic instruments.
-
-If the song matches the user's favorite genre, we give it the highest point (1 point). Next, we calculate how close the song's energy level to the user's target energy. An exact match gets 1 point, and the score decreases based on the distance.
-
-Formula: 1 - (|target - song_value|)
-
-We also score acousticness by checking if the song aligns with the user's preference. Song with high acousticness scores higher. Lastly, we check if the song's mood matches the user's favorite moode. Each of this six scores is then multiplies by a weight of each features:
-
-Genre: 35%
-Energy: 20%
-Valence: 20%
-Acousticness: 15%
-Danceability: 5%
-Mood: 5%
-
-Adding all these weighted scores together gives us final recomendation score between 0 and 1 for each song.
-
-Once we scored every song, we sort all songs from highest to lowest score and return the top 5 or how many songs the user requested.
+Replace this paragraph with your own summary of what your version does.
 
 ---
 
@@ -46,7 +27,28 @@ Some prompts to answer:
 - How does your `Recommender` compute a score for each song
 - How do you choose which songs to recommend
 
-You can include a simple diagram or bullet list if helpful.
+In this system, I are using genre, mood, energy, valence, danceability, acousticness for scoring. I am not using tempo because I thought it's already closely related to energy. Also, title, artist, and ID are also not used for scoring but for display and identification.
+
+UserProfile store their favorite genre, their favorite mood, their target energy level and whethher they prefer acoustic or electronic instruments.
+
+If the song matches the user's favorite genre, we give it the highest point (1 point). Next, we calculate how close the song's energy level to the user's target energy. An exact match gets 1 point, and the score decreases based on the distance.
+
+Formula: 1 - (|target - song_value|)
+
+We also score acousticness by checking if the song aligns with the user's preference. Song with high acousticness scores higher. Lastly, we check if the song's mood matches the user's favorite moode. Each of this six scores is then multiplies by a weight of each features:
+
+| Features     | Weight |
+| ------------ | ------ |
+| Genre        | 35%    |
+| Energy       | 20%    |
+| Valence      | 20%    |
+| Acousticness | 15%    |
+| Danceability | 5%     |
+| Mood         | 5%     |
+
+Adding all these weighted scores together gives us final recomendation score between 0 and 1 for each song.
+
+Once we scored every song, we sort all songs from highest to lowest score and return the top 5 or how many songs the user requested.
 
 ---
 
