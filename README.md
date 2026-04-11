@@ -11,7 +11,26 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+In this system, I are using genre, mood, energy, valence, danceability, acousticness for scoring. I am not using tempo because I thought it's already closely related to energy. Also, title, artist, and ID are also not used for scoring but for display and identification.
+
+UserProfile store their favorite genre, their favorite mood, their target energy level and whethher they prefer acoustic or electronic instruments.
+
+If the song matches the user's favorite genre, we give it the highest point (1 point). Next, we calculate how close the song's energy level to the user's target energy. An exact match gets 1 point, and the score decreases based on the distance.
+
+Formula: 1 - (|target - song_value|)
+
+We also score acousticness by checking if the song aligns with the user's preference. Song with high acousticness scores higher. Lastly, we check if the song's mood matches the user's favorite moode. Each of this six scores is then multiplies by a weight of each features:
+
+Genre: 35%
+Energy: 20%
+Valence: 20%
+Acousticness: 15%
+Danceability: 5%
+Mood: 5%
+
+Adding all these weighted scores together gives us final recomendation score between 0 and 1 for each song.
+
+Once we scored every song, we sort all songs from highest to lowest score and return the top 5 or how many songs the user requested.
 
 ---
 
@@ -22,7 +41,7 @@ Explain your design in plain language.
 Some prompts to answer:
 
 - What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
+   - For example: genre, mood, energy, tempo
 - What information does your `UserProfile` store
 - How does your `Recommender` compute a score for each song
 - How do you choose which songs to recommend
@@ -41,6 +60,8 @@ You can include a simple diagram or bullet list if helpful.
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
+
+   ```
 
 2. Install dependencies
 
@@ -101,12 +122,11 @@ Write 1 to 2 paragraphs here about what you learned:
 - about how recommenders turn data into predictions
 - about where bias or unfairness could show up in systems like this
 
-
 ---
 
 ## 7. `model_card_template.md`
 
-Combines reflection and model card framing from the Module 3 guidance. :contentReference[oaicite:2]{index=2}  
+Combines reflection and model card framing from the Module 3 guidance. :contentReference[oaicite:2]{index=2}
 
 ```markdown
 # 🎧 Model Card - Music Recommender Simulation
@@ -158,6 +178,7 @@ Describe your dataset.
 Where does your recommender work well
 
 You can think about:
+
 - Situations where the top results "felt right"
 - Particular user profiles it served well
 - Simplicity or transparency benefits
@@ -169,6 +190,7 @@ You can think about:
 Where does your recommender struggle
 
 Some prompts:
+
 - Does it ignore some genres or moods
 - Does it treat all users as if they have the same taste shape
 - Is it biased toward high energy or one genre by default
@@ -181,6 +203,7 @@ Some prompts:
 How did you check your system
 
 Examples:
+
 - You tried multiple user profiles and wrote down whether the results matched your expectations
 - You compared your simulation to what a real app like Spotify or YouTube tends to recommend
 - You wrote tests for your scoring logic
@@ -208,4 +231,4 @@ A few sentences about what you learned:
 - What surprised you about how your system behaved
 - How did building this change how you think about real music recommenders
 - Where do you think human judgment still matters, even if the model seems "smart"
-
+```
