@@ -50,6 +50,60 @@ Adding all these weighted scores together gives us final recomendation score bet
 
 Once we scored every song, we sort all songs from highest to lowest score and return the top 5 or how many songs the user requested.
 
+### Algorithm Recipe
+
+My algorithms scores each feature independently.
+
+Does the song's genre matches user's favorite genre?
+
+- Yes: 1.0
+- No: 0.0
+
+How close the song's energy to the user's target energy?
+
+- Formula: 1 - (|target_energy - song_energy|)
+
+How close song's valence to the user's target valence?
+
+- Formula: 1 - (|target_valence - song_valence|)
+
+How close is the song's danceability to the user's target danceability?
+
+- Formula: 1 - (|target_danceability - song_danceability|)
+
+Does the song's acousticness align with the user's preference?
+
+- If user likes_acoustic = True: score = song_acousticness
+- If user likes_acoustic = False: score = 1 - song_acousticness
+
+Does the song's mood match the user's favorite mood?
+
+- Yes: 1.0
+- No: 0.0
+
+### Combining All Feature Scores
+
+Each feature score is multiplied by its weight and added together:
+
+```
+FINAL_SCORE = (Genre_Score × 0.35)
+            + (Energy_Score × 0.20)
+            + (Valence_Score × 0.20)
+            + (Acousticness_Score × 0.15)
+            + (Danceability_Score × 0.05)
+            + (Mood_Score × 0.05)
+```
+
+The result is a score between 0.0 and 1.0, where 1.0 is a perfect match and 0.0 is a terrible match.
+
+### Ranking and Selection
+
+Once all songs are scored:
+
+1. Sort songs from highest to lowest score
+2. Return the top K songs (usually 5)
+3. The best matches appear at the top of the recommendation list
+
 ---
 
 ## Getting Started
