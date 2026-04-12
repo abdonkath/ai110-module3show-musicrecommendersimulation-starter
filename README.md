@@ -104,6 +104,10 @@ Once all songs are scored:
 2. Return the top K songs (usually 5)
 3. The best matches appear at the top of the recommendation list
 
+### Potential biases
+
+My recommender has several key limitations. First, the genre weight (35%) creates a hard barrier. A lofi fan won't receive an excellent acoustic pop song recommendation even if all other features match perfectly. Second, the acousticness preference is binary (yes/no), not flexible, so users can't express "sometimes acoustic, sometimes electronic." Third, the dataset is tiny (18 songs), limiting diversity and making recommendations repetitive. Finally, some genres are severely underrepresented (only 1 reggae, 1 metal, 1 country song), which means users interested in those genres get poor recommendations. The system also doesn't understand lyrics, artist diversity, or user context (time of day, current mood), which real recommenders use.
+
 ---
 
 ## Getting Started
@@ -152,18 +156,6 @@ Use this section to document the experiments you ran. For example:
 - How did your system behave for different types of users
 
 ---
-
-## Limitations and Risks
-
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
 
 ---
 
