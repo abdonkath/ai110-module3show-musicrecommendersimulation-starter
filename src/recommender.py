@@ -1,5 +1,6 @@
 from typing import List, Dict, Tuple, Optional
 from dataclasses import dataclass
+import csv
 
 @dataclass
 class Song:
@@ -48,65 +49,48 @@ class Recommender:
         # TODO: Implement explanation logic
         return "Explanation placeholder"
 
+# Loads and type-converts song data from a CSV into a list of dictionaries.
 def load_songs(csv_path: str) -> List[Dict]:
-    """
-    Loads songs from a CSV file.
-    Required by src/main.py
-    """
-    # TODO: Implement CSV loading logic
-    print(f"Loading songs from {csv_path}...")
-    return []
+    songs = []
+    
+    try:
+        with open(csv_path, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            
+            for row in reader:
+                # Convert numerical columns to appropriate types
+                song = {
+                    'id': int(row['id']),
+                    'title': row['title'],
+                    'artist': row['artist'],
+                    'genre': row['genre'],
+                    'mood': row['mood'],
+                    'energy': float(row['energy']),
+                    'tempo_bpm': float(row['tempo_bpm']),
+                    'valence': float(row['valence']),
+                    'danceability': float(row['danceability']),
+                    'acousticness': float(row['acousticness'])
+                }
+                songs.append(song)
+        
+        print(f"Successfully loaded {len(songs)} songs from {csv_path}")
+        return songs
+    
+    except FileNotFoundError:
+        print(f"Error: File {csv_path} not found.")
+        return []
+    except Exception as e:
+        print(f"Error loading songs: {e}")
+        return []
 
-def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, str]:
+def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     """
-    Scores a single song against user preferences using the weighted scoring formula.
-    
-    Weights:
-    - Genre (35%): Categorical match
-    - Energy (20%): Proximity match
-    - Valence (20%): Proximity match
-    - Acousticness (15%): Preference-based match
-    - Danceability (5%): Proximity match
-    - Mood (5%): Categorical match
-    
-    Returns: (score, explanation)
+    Scores a single song against user preferences.
+    Required by recommend_songs() and src/main.py
     """
-    
-    # Genre Match → Categorical (exact match or no match)
-    genre_score = 1.0 if user_prefs['favorite_genre'].lower() == song['genre'].lower() else 0.0
-    
-    # Energy Match → Proximity-based
-    energy_score = 1 - abs(user_prefs['target_energy'] - song['energy'])
-    
-    # Valence Match → Proximity-based (using actual user preference, not 0.70)
-    valence_score = 1 - abs(user_prefs['target_valence'] - song['valence'])
-    
-    # Danceability Match → Proximity-based (using actual user preference, not 0.70)
-    danceability_score = 1 - abs(user_prefs['target_danceability'] - song['danceability'])
-    
-    # Acousticness Match → Preference-based
-    if user_prefs['likes_acoustic']:
-        acousticness_score = song['acousticness']
-    else:
-        acousticness_score = 1 - song['acousticness']
-    
-    # Mood Match → Categorical (exact match or no match)
-    mood_score = 1.0 if user_prefs['favorite_mood'].lower() == song['mood'].lower() else 0.0
-    
-    # Apply weights and sum
-    total_score = (
-        genre_score * 0.35 +
-        energy_score * 0.20 +
-        valence_score * 0.20 +
-        acousticness_score * 0.15 +
-        danceability_score * 0.05 +
-        mood_score * 0.05
-    )
-    
-    # Build explanation
-    explanation = f"Genre: {genre_score:.2f} | Energy: {energy_score:.2f} | Valence: {valence_score:.2f} | Acousticness: {acousticness_score:.2f} | Dance: {danceability_score:.2f} | Mood: {mood_score:.2f}"
-    
-    return (total_score, explanation)
+    # TODO: Implement scoring logic using your Algorithm Recipe from Phase 2.
+    # Expected return format: (score, reasons)
+    return []
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """
