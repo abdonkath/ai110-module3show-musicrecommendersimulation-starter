@@ -83,14 +83,54 @@ def load_songs(csv_path: str) -> List[Dict]:
         print(f"Error loading songs: {e}")
         return []
 
-def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
-    """
-    Scores a single song against user preferences.
-    Required by recommend_songs() and src/main.py
-    """
-    # TODO: Implement scoring logic using your Algorithm Recipe from Phase 2.
-    # Expected return format: (score, reasons)
-    return []
+def score_song(user_prefs: UserProfile, song: Dict) -> Tuple[float, List[str]]:
+    reasons: List[str] = []
+
+    # --- Genre (35%) ---
+    genre_score = 1.0 if song['genre'] == user_prefs.favorite_genre else 0.0
+    if genre_score == 1.0:
+        reasons.append(f"Genre matches ({song['genre']})")
+    else:
+        reasons.append(f"Genre mismatch ({song['genre']} ≠ {user_prefs.favorite_genre})")
+
+    # --- Energy (20%): 1 - |target - song| ---
+    energy_score = 1.0 - abs(user_prefs.target_energy - song['energy'])
+    reasons.append(f"Energy score {energy_score:.2f} (song {song['energy']}, target {user_prefs.target_energy})")
+
+    # --- Valence (20%): 1 - |target - song| ---
+    valence_score = 1.0 - abs(user_prefs.target_valence - song['valence'])
+    reasons.append(f"Valence score {valence_score:.2f} (song {song['valence']}, target {user_prefs.target_valence})")
+
+    # --- Acousticness (15%) ---
+    if user_prefs.likes_acoustic:
+        acousticness_score = song['acousticness']
+        reasons.append(f"Acousticness score {acousticness_score:.2f} (prefers acoustic)")
+    else:
+        acousticness_score = 1.0 - song['acousticness']
+        reasons.append(f"Acousticness score {acousticness_score:.2f} (prefers electronic)")
+
+    # --- Danceability (5%): 1 - |target - song| ---
+    danceability_score = 1.0 - abs(user_prefs.target_danceability - song['danceability'])
+    reasons.append(f"Danceability score {danceability_score:.2f} (song {song['danceability']}, target {user_prefs.target_danceability})")
+
+    # --- Mood (5%) ---
+    mood_score = 1.0 if song['mood'] == user_prefs.favorite_mood else 0.0
+    if mood_score == 1.0:
+        reasons.append(f"Mood matches ({song['mood']})")
+    else:
+        reasons.append(f"Mood mismatch ({song['mood']} ≠ {user_prefs.favorite_mood})")
+
+    # --- Weighted final score ---
+    final_score = (
+        genre_score        * 0.35 +
+        energy_score       * 0.20 +
+        valence_score      * 0.20 +
+        acousticness_score * 0.15 +
+        danceability_score * 0.05 +
+        mood_score         * 0.05
+    )
+
+    return (final_score, reasons)
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """
