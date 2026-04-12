@@ -49,8 +49,8 @@ class Recommender:
         # TODO: Implement explanation logic
         return "Explanation placeholder"
 
-# Loads and type-converts song data from a CSV into a list of dictionaries.
 def load_songs(csv_path: str) -> List[Dict]:
+    """Load and type-convert song records from a CSV file into a list of dicts."""
     songs = []
     
     try:
@@ -84,6 +84,7 @@ def load_songs(csv_path: str) -> List[Dict]:
         return []
 
 def score_song(user_prefs: UserProfile, song: Dict) -> Tuple[float, List[str]]:
+    """Score a single song against a user profile using weighted feature matching."""
     reasons: List[str] = []
 
     # --- Genre (35%) ---
@@ -133,10 +134,7 @@ def score_song(user_prefs: UserProfile, song: Dict) -> Tuple[float, List[str]]:
     return (final_score, reasons)
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
-    """
-    Functional implementation of the recommendation logic.
-    Required by src/main.py
-    """
+    """Return the top-k songs ranked by score, highest first."""
     scored = [(song, score, reasons) for song in songs for score, reasons in [score_song(user_prefs, song)]]
     top_k = sorted(scored, key=lambda x: x[1], reverse=True)[:k]
     return [(song, score, "; ".join(reasons)) for song, score, reasons in top_k]
