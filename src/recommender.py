@@ -27,9 +27,10 @@ class UserProfile:
     favorite_genre: str
     favorite_mood: str
     target_energy: float
-    likes_acoustic: bool
     target_valence: float
     target_danceability: float
+    likes_acoustic: bool
+
 
 class Recommender:
     """
@@ -56,14 +57,56 @@ def load_songs(csv_path: str) -> List[Dict]:
     print(f"Loading songs from {csv_path}...")
     return []
 
-def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
+def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, str]:
     """
-    Scores a single song against user preferences.
-    Required by recommend_songs() and src/main.py
+    Scores a single song against user preferences using the weighted scoring formula.
+    
+    Weights:
+    - Genre (35%): Categorical match
+    - Energy (20%): Proximity match
+    - Valence (20%): Proximity match
+    - Acousticness (15%): Preference-based match
+    - Danceability (5%): Proximity match
+    - Mood (5%): Categorical match
+    
+    Returns: (score, explanation)
     """
-    # TODO: Implement scoring logic using your Algorithm Recipe from Phase 2.
-    # Expected return format: (score, reasons)
-    return []
+    
+    # Genre Match → Categorical (exact match or no match)
+    genre_score = 1.0 if user_prefs['favorite_genre'].lower() == song['genre'].lower() else 0.0
+    
+    # Energy Match → Proximity-based
+    energy_score = 1 - abs(user_prefs['target_energy'] - song['energy'])
+    
+    # Valence Match → Proximity-based (using actual user preference, not 0.70)
+    valence_score = 1 - abs(user_prefs['target_valence'] - song['valence'])
+    
+    # Danceability Match → Proximity-based (using actual user preference, not 0.70)
+    danceability_score = 1 - abs(user_prefs['target_danceability'] - song['danceability'])
+    
+    # Acousticness Match → Preference-based
+    if user_prefs['likes_acoustic']:
+        acousticness_score = song['acousticness']
+    else:
+        acousticness_score = 1 - song['acousticness']
+    
+    # Mood Match → Categorical (exact match or no match)
+    mood_score = 1.0 if user_prefs['favorite_mood'].lower() == song['mood'].lower() else 0.0
+    
+    # Apply weights and sum
+    total_score = (
+        genre_score * 0.35 +
+        energy_score * 0.20 +
+        valence_score * 0.20 +
+        acousticness_score * 0.15 +
+        danceability_score * 0.05 +
+        mood_score * 0.05
+    )
+    
+    # Build explanation
+    explanation = f"Genre: {genre_score:.2f} | Energy: {energy_score:.2f} | Valence: {valence_score:.2f} | Acousticness: {acousticness_score:.2f} | Dance: {danceability_score:.2f} | Mood: {mood_score:.2f}"
+    
+    return (total_score, explanation)
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """

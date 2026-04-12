@@ -17,6 +17,8 @@ def printProfile(user_profile):
     print(f"  • Genre preference: {user_profile.favorite_genre}")
     print(f"  • Mood preference: {user_profile.favorite_mood}")
     print(f"  • Energy level: {user_profile.target_energy}")
+    print(f"  • Valence (positivity): {user_profile.target_valence}")
+    print(f"  • Danceability: {user_profile.target_danceability}")
     print(f"  • Likes acoustic: {user_profile.likes_acoustic}")
 
 
@@ -29,6 +31,8 @@ def main() -> None:
         favorite_genre="lofi",
         favorite_mood="chill", 
         target_energy=0.40,
+        target_valence=0.55,
+        target_danceability=0.45,
         likes_acoustic=True
     )
     
