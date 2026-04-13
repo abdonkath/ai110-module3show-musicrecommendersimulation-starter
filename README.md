@@ -121,8 +121,6 @@ Here is the output for different taste profile copy pasted from terminal:
 Music Recommender Simulation
 Taste Profile: High-Energy Pop
 
----
-
 Genre: pop
 Mood: happy
 Energy: 0.9
@@ -191,8 +189,6 @@ Top 5 Recommendations
 ============================================================
 Music Recommender Simulation
 Taste Profile: Chill Lofi
-
----
 
 Genre: lofi
 Mood: chill
@@ -263,8 +259,6 @@ Top 5 Recommendations
 Music Recommender Simulation
 Taste Profile: Deep Intense Rock
 
----
-
 Genre: rock
 Mood: intense
 Energy: 0.92
@@ -333,8 +327,6 @@ Top 5 Recommendations
 ============================================================
 Music Recommender Simulation
 Taste Profile: Edge Case 1 — Contradictory Energy + Mood
-
----
 
 Genre: pop
 Mood: melancholic
@@ -405,8 +397,6 @@ Top 5 Recommendations
 Music Recommender Simulation
 Taste Profile: Edge Case 2 — Ghost Genre (bossa nova)
 
----
-
 Genre: bossa nova
 Mood: relaxed
 Energy: 0.45
@@ -476,8 +466,6 @@ Top 5 Recommendations
 Music Recommender Simulation
 Taste Profile: Edge Case 3 — All Features Maxed Out
 
----
-
 Genre: electronic
 Mood: energetic
 Energy: 1.0
@@ -546,8 +534,6 @@ Top 5 Recommendations
 ============================================================
 Music Recommender Simulation
 Taste Profile: Edge Case 4 — Acoustic Headbanger
-
----
 
 Genre: metal
 Mood: angry
