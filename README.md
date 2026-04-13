@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This project matches songs to user's taste profile and returns the top k best fits. It used 6 audio features, genre, mood, energy, valence, dancebility, and acousticness to score each song against user preference. The final score is a weighted sum between 0.0 and 1.0, with genre carrying the most influence at 35%. The recommendations has a breakdown and tells user the reasons on why they were recommended.
 
 ---
 
